@@ -13,17 +13,15 @@ gem 'capistrano-scm-local-file', '~> 0.1', :github => 'peterjmit/capistrano-scm-
 
 ## Usage
 
-Require the library in your Capfile
+__DO NOT_ require the library in your Capfile (capistrano handles loading the 
+plugin automatically when you set `set :scm, :local_file`)
+
+Set the `scm` attribute to `:local_file` and  `repo_url` as the path to your 
+file/archive containing your application (currently only files with `.tar.gz` 
+extensions are supported)
 
 ```ruby
-# Capfile
-require 'capistrano/local_file'
-```
-
-Set the `repo_url` variable as the path to your file/archive containing your
-application (currently only files with `.tar.gz` extensions are supported)
-
-```ruby
+set :scm, :local_file
 set :repo_url, 'my-awesome-app.tar.gz'
 ```
 
