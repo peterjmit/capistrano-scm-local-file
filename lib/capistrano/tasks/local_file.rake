@@ -38,7 +38,7 @@ namespace :local_file do
   task create_release: :'local_file:update' do
     on release_roles :all do
       info 'running task local_file:create_release'
-      within repo_path do
+      within "#{deploy_path}/local_file" do
         execute :mkdir, '-p', release_path
         strategy.release
       end
@@ -48,7 +48,7 @@ namespace :local_file do
   desc 'Determine the revision that will be deployed'
   task :set_current_revision do
     on release_roles :all do
-      within repo_path do
+      within "#{deploy_path}/local_file" do
         set :current_revision, strategy.fetch_revision
       end
     end
