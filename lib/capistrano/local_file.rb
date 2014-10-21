@@ -9,7 +9,7 @@ require 'capistrano/scm'
 class Capistrano::LocalFile < Capistrano::SCM
   module DefaultStrategy
     def test
-      test! " [ -d #{repo_path} ] "
+      test! " [ -d #{deploy_path}/local_file ] "
     end
 
     def check
@@ -17,20 +17,20 @@ class Capistrano::LocalFile < Capistrano::SCM
     end
 
     def clone
-      context.execute :mkdir, '-p', repo_path
+      context.execute :mkdir, '-p', "#{deploy_path}/local_file"
 
       true
     end
 
     # Upload a local file to the server
     def update
-      context.upload! fetch(:repo_url), "#{repo_path}/#{fetch(:repo_url)}"
+      context.upload! fetch(:repo_url), "#{deploy_path}/local_file/#{fetch(:repo_url)}"
     end
 
     # Unpack and rsync the contents into release path
     def release
-      context.execute :tar, '-xvzf', "#{repo_path}/#{fetch(:repo_url)}"
-      context.execute :rsync, "-r", "--exclude=#{fetch(:repo_url)}", "#{repo_path}/*", release_path
+      context.execute :tar, '-xvzf', "#{deploy_path}/local_file/#{fetch(:repo_url)}"
+      context.execute :rsync, "-r", "--exclude=#{fetch(:repo_url)}", "#{deploy_path}/local_file/*", release_path
     end
 
     # TODO: SHA of archive, or variable or something to set the revision number?
